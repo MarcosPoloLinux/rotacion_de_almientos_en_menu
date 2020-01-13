@@ -62,7 +62,7 @@ public class Almuerzo extends AppCompatActivity {
 
         preguntaIngrediente = findViewById(R.id.ingrediente);
 
-        //Si no es la primera vez, existirá el fichero CEREALES y habrá que cargar el array desde fichero:
+        //Si no es la primera vez, existirá el fichero CEREALES y habrá que cargar el array desde SharedPreferences
         if (cerealesSharedPreferences.contains(String.valueOf(0))) {
             for (int i= 0;i<8;i++){
                 cereales[i]=cerealesSharedPreferences.getString(String.valueOf(i),"");
@@ -70,47 +70,23 @@ public class Almuerzo extends AppCompatActivity {
 
         } //fin de la carga del array cereales
 
-        //Si no es la primera vez, existirá el fichero LEGUMBRES y habrá que cargar el array desde fichero:
-        if (legumbres_txt.exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput("legumbres.txt")));
-                for (int i = 0; i < 9; i++) {
-                    legumbres[i] = br.readLine();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        //Si no es la primera vez, existirá el fichero LEGUMBRES y habrá que cargar el array desde SharedPreferences
+        if (legumbresSharedPreferences.contains(String.valueOf(0))) {
+            for (int i=0;i<9;i++){
+                legumbres[i]=legumbresSharedPreferences.getString(String.valueOf(i),"");
             }
-
         } //fin de la carga del array legumbres
 
-        //Si no es la primera vez, existirá el fichero HORTALIZAS_TUBERCULOS y habrá que cargar el array desde fichero:
-        if (hortalizas_tuberculos_txt.exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput("hortalizas_tuberculos.txt")));
-                for (int i = 0; i < 14; i++) {
-                    hortalizas_tuberculos[i] = br.readLine();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        //Si no es la primera vez, existirá el fichero HORTALIZAS_TUBERCULOS y habrá que cargar el array desde SharedPreferences:
+        if (hortalizas_tuberculosSharedPreferences.contains(String.valueOf(0))) {
+            for (int i=0;i<14;i++){
+                hortalizas_tuberculos[i]=hortalizas_tuberculosSharedPreferences.getString(String.valueOf(i),"");
         } //fin de la carga del array hortalizas_tuberculos
 
-        //Si no es la primera vez, existirá el fichero CONDIMENTOS_HIDRATOS y habrá que cargar el array desde fichero:
-        if (condimento_hidratos_txt.exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput("condimento_hidratos.txt")));
-                for (int i = 0; i < 7; i++) {
-                    condimento_hidratos[i] = br.readLine();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        //Si no es la primera vez, existirá el fichero CONDIMENTOS_HIDRATOS y habrá que cargar el array desde SharedPreferences:
+        if (condimento_hidratosSharedPreferences.contains(String.valueOf(0))) {
+            for (int i=0;i<7;i++){
+                condimento_hidratos[i]=condimento_hidratosSharedPreferences.getString(String.valueOf(i),"");
         } //fin de la carga del array condimentos_hidratos.
 
         // primera vez que muestra ingrediente preguntado. Las demás veces en onClicks...
