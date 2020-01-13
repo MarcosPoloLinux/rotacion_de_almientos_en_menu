@@ -63,16 +63,9 @@ public class Almuerzo extends AppCompatActivity {
         preguntaIngrediente = findViewById(R.id.ingrediente);
 
         //Si no es la primera vez, existirá el fichero CEREALES y habrá que cargar el array desde fichero:
-        if (cereales_txt.exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput("cereales.txt")));
-                for (int i = 0; i < 8; i++) {
-                    cereales[i] = br.readLine();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (cerealesSharedPreferences.contains(String.valueOf(0))) {
+            for (int i= 0;i<8;i++){
+                cereales[i]=cerealesSharedPreferences.getString(String.valueOf(i),"");
             }
 
         } //fin de la carga del array cereales
