@@ -6,15 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 public class Almuerzo extends AppCompatActivity {
 
@@ -26,8 +20,12 @@ public class Almuerzo extends AppCompatActivity {
     // ahora con SharedPreferences:
     SharedPreferences cerealesSharedPreferences = getSharedPreferences("cereales", Context.MODE_PRIVATE);
     SharedPreferences legumbresSharedPreferences = getSharedPreferences("legumbres", Context.MODE_PRIVATE);
-    SharedPreferences hortalizas_tuberculosSharedPreferences = getSharedPreferences("hortalizas_tuberculos", Context.MODE_PRIVATE);
-    SharedPreferences condimento_hidratosSharedPreferences = getSharedPreferences("condimento_hidratos", Context.MODE_PRIVATE);
+    SharedPreferences hortalizasTuberculosSharedPreferences = getSharedPreferences("hortalizas_tuberculos", Context.MODE_PRIVATE);
+    SharedPreferences condimentoHidratosSharedPreferences = getSharedPreferences("condimento_hidratos", Context.MODE_PRIVATE);
+    SharedPreferences.Editor sharedPrefEditorCereales = cerealesSharedPreferences.edit();
+    SharedPreferences.Editor sharedPrefEditorLegumbres = legumbresSharedPreferences.edit();
+    SharedPreferences.Editor sharedPrefEditorHortalizasTuberculos = hortalizasTuberculosSharedPreferences.edit();
+    SharedPreferences.Editor sharedPrefEditorCondimentoHidratos = condimentoHidratosSharedPreferences.edit();
 
     Button respuestaSi;
     Button respuestaNo;
@@ -74,15 +72,15 @@ public class Almuerzo extends AppCompatActivity {
         } //fin de la carga del array legumbres
 
         //Si no es la primera vez, existirá el fichero HORTALIZAS_TUBERCULOS y habrá que cargar el array desde SharedPreferences:
-        if (hortalizas_tuberculosSharedPreferences.contains(String.valueOf(0))) {
+        if (hortalizasTuberculosSharedPreferences.contains(String.valueOf(0))) {
             for (int i = 0; i < 14; i++) {
-                hortalizas_tuberculos[i] = hortalizas_tuberculosSharedPreferences.getString(String.valueOf(i), "");
+                hortalizas_tuberculos[i] = hortalizasTuberculosSharedPreferences.getString(String.valueOf(i), "");
             } //fin de la carga del array hortalizas_tuberculos
         }
         //Si no es la primera vez, existirá el fichero CONDIMENTOS_HIDRATOS y habrá que cargar el array desde SharedPreferences:
-        if (condimento_hidratosSharedPreferences.contains(String.valueOf(0))) {
+        if (condimentoHidratosSharedPreferences.contains(String.valueOf(0))) {
             for (int i = 0; i < 7; i++) {
-                condimento_hidratos[i] = condimento_hidratosSharedPreferences.getString(String.valueOf(i), "");
+                condimento_hidratos[i] = condimentoHidratosSharedPreferences.getString(String.valueOf(i), "");
             } //fin de la carga del array condimentos_hidratos.
         }
         // primera vez que muestra ingrediente preguntado. Las demás veces en onClicks...
@@ -231,35 +229,39 @@ public class Almuerzo extends AppCompatActivity {
     }
 
     private void guardarArrayCereales() {
-        try {
-            if (!cereales_txt.exists()) {
-                cereales_txt.createNewFile();
-            }
-            PrintWriter bw = new PrintWriter(new BufferedWriter(new FileWriter("cereales.txt")));
-            for (int i = 0; i < 8; i++) {
-                bw.write(cereales[i]);
-            }
-            bw.close();
-        } catch (IOException e) {
-            Log.e("Ficheros", "Error al escribir fichero a memoria interna");
+        for (int i = 0; i < 8; i++) {
+            sharedPrefEditorCereales.putString(String.valueOf(i), cereales[i]);
+            sharedPrefEditorCereales.commit();
         }
     }
 
     private void guardarArrayLegumbres() {
+        for (int i = 0; i < 9; i++) {
+            sharedPrefEditorLegumbres.putString(String.valueOf(i), legumbres[i]);
+            sharedPrefEditorLegumbres.commit();
+        }
     }
 
     private void guardarArrayHortalizaTuberculo() {
+        for (int i = 0; i < 14; i++) {
+            sharedPrefEditorHortalizasTuberculos.putString(String.valueOf(i),hortalizas_tuberculos[i]);
+            sharedPrefEditorHortalizasTuberculos.commit();
+        }
     }
 
     private void guardarArrayCondimentoHidratos() {
+        for (int i=0;i<7;i++){
+            sharedPrefEditorCondimentoHidratos.putString(String.valueOf(i),condimento_hidratos[i]);
+            sharedPrefEditorCondimentoHidratos.commit();
+        }
     }
 
     private void lanzaActivityMenuFinal() {
         Intent intencion = new Intent(this, MenuFinal.class);
-        intencion.putExtra("cerealElegidoExtra",cerealElegido);
-        intencion.putExtra("legumbreElegidaExtra",legumbreElegida);
+        intencion.putExtra("cerealElegidoExtra", cerealElegido);
+        intencion.putExtra("legumbreElegidaExtra", legumbreElegida);
         intencion.putExtra("hortalizaTuberculoElegidoExtra", hortalizaTuberculoElegido);
-        intencion.putExtra("condimentoHidratosElegidoExtra",condimento_hidratosElegido);
+        intencion.putExtra("condimentoHidratosElegidoExtra", condimento_hidratosElegido);
         startActivity(intencion);
     }
 
