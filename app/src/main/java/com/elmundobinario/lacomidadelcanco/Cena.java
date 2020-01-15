@@ -79,18 +79,21 @@ public class Cena extends AppCompatActivity {
             }
         }
         // Carga del array ordenDePescados si no es la primera vez... :
-        if (pescados.contains("0")){
-            for (int i=0;i<9;i++){
-                ordenDePescados[i]=pescados.getString(String.valueOf(i),"");
+        if (pescados.contains("0")) {
+            for (int i = 0; i < 9; i++) {
+                ordenDePescados[i] = pescados.getString(String.valueOf(i), "");
             }
         }
         // Carga del array ordenDeCondimentosCena si no es la primera vez... :
-        if (condimentosCena.contains("0")){
-            for (int i=0;i<8;i++){
-                ordenDeCondimentosCena[i]=condimentosCena.getString(String.valueOf(i),"");
+        if (condimentosCena.contains("0")) {
+            for (int i = 0; i < 8; i++) {
+                ordenDeCondimentosCena[i] = condimentosCena.getString(String.valueOf(i), "");
             }
         }
-
+        // primera vez que muestra ingrediente preguntado. Las demás veces en onClicks...
+        if (ordenBloqueAlimento == 1) {
+            preguntaIngrediente.setText(ordenDeVerduras[verduraPreguntada] + "?");
+        }
 
     }
 
