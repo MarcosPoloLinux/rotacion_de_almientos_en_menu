@@ -7,7 +7,6 @@
     tools:context=".Almuerzo"
     android:keepScreenOn="true">
 
-
     <TextView
         android:id="@+id/hay"
         android:layout_width="wrap_content"
@@ -25,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/ingrediente"
+        android:id="@+id/ingrediente_almuerzo_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="335dp"
@@ -41,20 +40,20 @@
         app:layout_constraintTop_toBottomOf="@+id/hay"/>
 
     <Button
-        android:id="@+id/si"
+        android:id="@+id/si_almuerzo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="32dp"
         android:background="@android:color/holo_green_dark"
-        android:onClick="clickSi"
+        android:onClick="clickSi_Almuerzo"
         android:text="si"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingrediente" />
+        app:layout_constraintTop_toBottomOf="@+id/ingrediente_almuerzo_textview" />
 
     <Button
-        android:id="@+id/no"
+        android:id="@+id/no_almuerzo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -62,8 +61,8 @@
         android:layout_marginRight="100dp"
         android:text="no"
         android:background="@android:color/holo_red_dark"
-        android:onClick="clickNo"
+        android:onClick="clickNo_Almuerzo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingrediente" />
+        app:layout_constraintTop_toBottomOf="@+id/ingrediente_almuerzo_textview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Cena">
+    tools:context=".Cena"
+    android:keepScreenOn="true">
+
+    <TextView
+        android:id="@+id/hay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="336dp"
+        android:layout_marginStart="336dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginRight="337dp"
+        android:layout_marginEnd="337dp"
+        android:text="¿Hay"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/ingrediente_cena_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="335dp"
+        android:layout_marginStart="335dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="338dp"
+        android:layout_marginEnd="338dp"
+        android:text=""
+        android:textSize="36sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hay"/>
+
+    <Button
+        android:id="@+id/si_cena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/holo_green_dark"
+        android:onClick="clickSi_Cena"
+        android:text="si"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingrediente_cena_textview" />
+
+    <Button
+        android:id="@+id/no_cena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:text="no"
+        android:background="@android:color/holo_red_dark"
+        android:onClick="clickNo_Cena"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingrediente_cena_textview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

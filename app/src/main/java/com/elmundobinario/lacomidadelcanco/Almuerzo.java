@@ -13,11 +13,8 @@ import android.widget.TextView;
 public class Almuerzo extends AppCompatActivity {
 
     TextView preguntaIngrediente;
-    //File cereales_txt = new File("cereales.txt");
-    //File legumbres_txt = new File("legumbres.txt");
-    //File hortalizas_tuberculos_txt = new File("hortalizas_tuberculos.txt");
-    //File condimento_hidratos_txt = new File("condimento_hidratos.txt");
-    // ahora con SharedPreferences:
+
+    // base de datos con SharedPreferences:
     SharedPreferences cerealesSharedPreferences;
     SharedPreferences legumbresSharedPreferences;
     SharedPreferences hortalizasTuberculosSharedPreferences;
@@ -27,9 +24,7 @@ public class Almuerzo extends AppCompatActivity {
     SharedPreferences.Editor sharedPrefEditorHortalizasTuberculos;
     SharedPreferences.Editor sharedPrefEditorCondimentoHidratos;
 
-    Button respuestaSi;
-    Button respuestaNo;
-    //Aquí cargará provisionalmente el array de cereales:
+    //Aquí cargarán provisionalmente los arrays:
     String cereales[] = {"arroz integral", "pasta integral", "trigo sarraceno",
             "quinoa", "amaranto", "arroz blanco", "maiz", "mijo"};
     String legumbres[] = {"soja verde en grano", "azuki", "lentejas", "alubias oscuras", "habas",
@@ -54,7 +49,7 @@ public class Almuerzo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_almuerzo);
 
-        preguntaIngrediente = findViewById(R.id.ingrediente);
+        preguntaIngrediente = findViewById(R.id.ingrediente_almuerzo_textview);
 
         cerealesSharedPreferences = getSharedPreferences("cereales", Context.MODE_PRIVATE);
         legumbresSharedPreferences = getSharedPreferences("legumbres", Context.MODE_PRIVATE);
@@ -99,7 +94,7 @@ public class Almuerzo extends AppCompatActivity {
 
     }
 
-    public void clickSi(View view) {
+    public void clickSi_Almuerzo(View view) {
         // 1 = cereales
         if (ordenBloqueAlimento == 1) {
             cerealElegido = cereales[cerealPreguntado];
@@ -139,7 +134,7 @@ public class Almuerzo extends AppCompatActivity {
 
     }
 
-    public void clickNo(View view) {
+    public void clickNo_Almuerzo(View view) {
         if (ordenBloqueAlimento == 1) { // si es un cereal:
             cerealPreguntado++;        // pasa a preguntar el siguiente cereal
             if (cerealPreguntado >= 8) {
