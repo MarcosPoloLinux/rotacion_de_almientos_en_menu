@@ -59,6 +59,38 @@ public class Cena extends AppCompatActivity {
                 ordenDeVerduras[i] = verdurasCenaYTipoProteina.getString(String.valueOf(i), "");
             }
         }
+        // Carga del array ordenDeTipoDeProteinas si no es la primera vez... :
+        if (verdurasCenaYTipoProteina.contains("huevo")) {
+            for (int i = 0; i < 4; i++) {
+                if (verdurasCenaYTipoProteina.getString("huevo", "")
+                        == String.valueOf(i)) {
+                    ordenDeTipoDeProteinas[i] = "huevo";
+                } else if (verdurasCenaYTipoProteina.getString("pescado", "")
+                        == String.valueOf(i)) {
+                    ordenDeTipoDeProteinas[i] = "pescado";
+                } else if (verdurasCenaYTipoProteina.getString("champiñones", "")
+                        == String.valueOf(i)) {
+                    ordenDeTipoDeProteinas[i] = "champiñones";
+                } else if (verdurasCenaYTipoProteina.getString("pollo", "")
+                        == String.valueOf(i)) {
+                    ordenDeTipoDeProteinas[i] = "pollo";
+
+                }
+            }
+        }
+        // Carga del array ordenDePescados si no es la primera vez... :
+        if (pescados.contains("0")){
+            for (int i=0;i<9;i++){
+                ordenDePescados[i]=pescados.getString(String.valueOf(i),"");
+            }
+        }
+        // Carga del array ordenDeCondimentosCena si no es la primera vez... :
+        if (condimentosCena.contains("0")){
+            for (int i=0;i<8;i++){
+                ordenDeCondimentosCena[i]=condimentosCena.getString(String.valueOf(i),"");
+            }
+        }
+
 
     }
 
