@@ -18,14 +18,14 @@ public class Almuerzo extends AppCompatActivity {
     //File hortalizas_tuberculos_txt = new File("hortalizas_tuberculos.txt");
     //File condimento_hidratos_txt = new File("condimento_hidratos.txt");
     // ahora con SharedPreferences:
-    SharedPreferences cerealesSharedPreferences = getSharedPreferences("cereales", Context.MODE_PRIVATE);
-    SharedPreferences legumbresSharedPreferences = getSharedPreferences("legumbres", Context.MODE_PRIVATE);
-    SharedPreferences hortalizasTuberculosSharedPreferences = getSharedPreferences("hortalizas_tuberculos", Context.MODE_PRIVATE);
-    SharedPreferences condimentoHidratosSharedPreferences = getSharedPreferences("condimento_hidratos", Context.MODE_PRIVATE);
-    SharedPreferences.Editor sharedPrefEditorCereales = cerealesSharedPreferences.edit();
-    SharedPreferences.Editor sharedPrefEditorLegumbres = legumbresSharedPreferences.edit();
-    SharedPreferences.Editor sharedPrefEditorHortalizasTuberculos = hortalizasTuberculosSharedPreferences.edit();
-    SharedPreferences.Editor sharedPrefEditorCondimentoHidratos = condimentoHidratosSharedPreferences.edit();
+    SharedPreferences cerealesSharedPreferences;
+    SharedPreferences legumbresSharedPreferences;
+    SharedPreferences hortalizasTuberculosSharedPreferences;
+    SharedPreferences condimentoHidratosSharedPreferences;
+    SharedPreferences.Editor sharedPrefEditorCereales;
+    SharedPreferences.Editor sharedPrefEditorLegumbres;
+    SharedPreferences.Editor sharedPrefEditorHortalizasTuberculos;
+    SharedPreferences.Editor sharedPrefEditorCondimentoHidratos;
 
     Button respuestaSi;
     Button respuestaNo;
@@ -55,6 +55,15 @@ public class Almuerzo extends AppCompatActivity {
         setContentView(R.layout.activity_almuerzo);
 
         preguntaIngrediente = findViewById(R.id.ingrediente);
+
+        cerealesSharedPreferences = getSharedPreferences("cereales", Context.MODE_PRIVATE);
+        legumbresSharedPreferences = getSharedPreferences("legumbres", Context.MODE_PRIVATE);
+        hortalizasTuberculosSharedPreferences = getSharedPreferences("hortalizas_tuberculos", Context.MODE_PRIVATE);
+        condimentoHidratosSharedPreferences = getSharedPreferences("condimento_hidratos", Context.MODE_PRIVATE);
+        sharedPrefEditorCereales = cerealesSharedPreferences.edit();
+        sharedPrefEditorLegumbres = legumbresSharedPreferences.edit();
+        sharedPrefEditorHortalizasTuberculos = hortalizasTuberculosSharedPreferences.edit();
+        sharedPrefEditorCondimentoHidratos = condimentoHidratosSharedPreferences.edit();
 
         //Si no es la primera vez, existirá el fichero CEREALES y habrá que cargar el array desde SharedPreferences
         if (cerealesSharedPreferences.contains(String.valueOf(0))) {
@@ -128,10 +137,61 @@ public class Almuerzo extends AppCompatActivity {
             lanzaActivityMenuFinal();
         }
 
-
     }
 
     public void clickNo(View view) {
+        if (ordenBloqueAlimento == 1) { // si es un cereal:
+            cerealPreguntado++;        // pasa a preguntar el siguiente cereal
+            if (cerealPreguntado >= 8) {
+                ordenBloqueAlimento++; // ya no hay más cereales: pasa a legumbres...
+                preguntaIngrediente.setText(legumbres[legumbrePreguntada] + "?");
+                cerealPreguntado = 0;
+                cerealElegido = "";
+            } else {
+                preguntaIngrediente.setText(cereales[cerealPreguntado] + "?");
+            }
+        }
+        if (ordenBloqueAlimento == 2) { // si es una legumbre:
+            legumbrePreguntada++;        // pasa a preguntar la siguiente legumbre:
+            if (legumbrePreguntada >= 9) {
+                ordenBloqueAlimento++; // ya no hay más cereales: pasa a legumbres...
+                preguntaIngrediente.setText(hortalizas_tuberculos[hortaliza_tuberculoPreguntado] + "?");
+                legumbrePreguntada = 0;
+                legumbreElegida = "";
+            } else {
+                preguntaIngrediente.setText(legumbres[legumbrePreguntada] + "?");
+            }
+
+        }
+        if (ordenBloqueAlimento == 3) { // si es una hortaliza:
+            hortaliza_tuberculoPreguntado++; // pasa a preguntar la siguiente hortaliza:
+            if (hortaliza_tuberculoPreguntado >= 14) {
+                ordenBloqueAlimento++; // ya no hay más cereales: pasa a legumbres...
+                preguntaIngrediente.setText(condimento_hidratos[condimento_hidratosPreguntado] + "?");
+                hortaliza_tuberculoPreguntado = 0;
+                hortalizaTuberculoElegido = "";
+            } else {
+                preguntaIngrediente.setText(hortalizas_tuberculos[hortaliza_tuberculoPreguntado] + "?");
+            }
+
+        }
+        if (ordenBloqueAlimento == 4) { // si es un condimento:
+            condimento_hidratosPreguntado++; // pasa a preguntar el siguiente condimento:
+            if (condimento_hidratosPreguntado >= 7) {
+                // Aqui ya se tienen todos los alimentos
+                // AQUI VA EL DÓDIGO PARA GUARDAR DATOS DE ARRAYS EN ARCHIVOS
+                guardarArrayCereales();
+                guardarArrayLegumbres();
+                guardarArrayHortalizaTuberculo();
+                guardarArrayCondimentoHidratos();
+                condimento_hidratosPreguntado = 0;
+                condimento_hidratosElegido = "";
+                lanzaActivityMenuFinal();
+            } else {
+                preguntaIngrediente.setText(condimento_hidratos[condimento_hidratosPreguntado] + "?");
+            }
+
+        }
     }
 
     private void RotarArrayAlimento() {
@@ -139,39 +199,27 @@ public class Almuerzo extends AppCompatActivity {
         if (ordenBloqueAlimento == 1) {
             String reordenandoCereales[] = new String[8];
             reordenandoCereales[7] = cereales[cerealPreguntado];
-            if (cerealPreguntado == 0) {
-                for (int i = 0; i == 7; i++) {
-                    reordenandoCereales[i] = cereales[i + 1];
-                }
-            } else {
-                for (int i = 0; i < cerealPreguntado; i++) {
-                    reordenandoCereales[i] = cereales[i - 1];
-                }
-                for (int i = cerealPreguntado; i == 7; i++) {
-                    reordenandoCereales[i] = cereales[i + 1];
-                }
+            int siguienteCerealPreguntadoEnIf = 0;
+            for (int i = 0; i < 7; i++) {
+                if (i == cerealPreguntado) siguienteCerealPreguntadoEnIf++; // salta el indice vacio
+                // del indice que se mueve al final (ultimo indice del array)
+                reordenandoCereales[i] = cereales[siguienteCerealPreguntadoEnIf];
+                siguienteCerealPreguntadoEnIf++;
             }
+            // Pasamos el array de seguridad al array original, actualizando así el array:
             for (int i = 0; i < 8; i++) {
                 cereales[i] = reordenandoCereales[i];
             }
-
         }
         //ROTAR LEGUMBRES:
         else if (ordenBloqueAlimento == 2) {
             String reordenandoLegumbres[] = new String[9];
             reordenandoLegumbres[8] = legumbres[legumbrePreguntada];
-            if (legumbrePreguntada == 0) {
-                for (int i = 0; i == 8; i++) {
-                    reordenandoLegumbres[i] = legumbres[i + 1];
-                }
-            } else {
-                for (int i = 0; i < legumbrePreguntada; i++) {
-                    reordenandoLegumbres[i] = legumbres[i - 1];
-                }
-                //aqui la 'i' llega hasta un indice menos del total, donde está la elegida en reordenando:
-                for (int i = legumbrePreguntada; i == 8; i++) {
-                    reordenandoLegumbres[i] = legumbres[i + 1];
-                }
+            int siguienteLegumbrePreguntadaEnIf = 0;
+            for (int i = 0; i < 8; i++) {
+                if (i == legumbrePreguntada) siguienteLegumbrePreguntadaEnIf++;
+                reordenandoLegumbres[i] = legumbres[siguienteLegumbrePreguntadaEnIf];
+                siguienteLegumbrePreguntadaEnIf++;
             }
             // Pasamos el array de seguridad al array original, actualizando así el array:
             for (int i = 0; i < 9; i++) {
@@ -181,24 +229,17 @@ public class Almuerzo extends AppCompatActivity {
         }
         //ROTAR HORTALIZAS_TUBERCULOS:
         else if (ordenBloqueAlimento == 3) {
-            String reordenandoHortalizas_Tuberculos[] = new String[14];
-            reordenandoHortalizas_Tuberculos[13] = hortalizas_tuberculos[hortaliza_tuberculoPreguntado];
-            if (hortaliza_tuberculoPreguntado == 0) {
-                for (int i = 0; i == 13; i++) {
-                    reordenandoHortalizas_Tuberculos[i] = hortalizas_tuberculos[i + 1];
-                }
-            } else {
-                for (int i = 0; i < hortaliza_tuberculoPreguntado; i++) {
-                    reordenandoHortalizas_Tuberculos[i] = hortalizas_tuberculos[i - 1];
-                }
-                //aqui la 'i' llega hasta un indice menos del total, donde está la elegida en reordenando:
-                for (int i = hortaliza_tuberculoPreguntado; i == 13; i++) {
-                    reordenandoHortalizas_Tuberculos[i] = hortalizas_tuberculos[i + 1];
-                }
+            String reordenandoHortalizasTuberculos[] = new String[14];
+            reordenandoHortalizasTuberculos[13] = hortalizas_tuberculos[hortaliza_tuberculoPreguntado];
+            int siguienteHortalizaPreguntadaEnIf = 0;
+            for (int i = 0; i < 13; i++) {
+                if (i == hortaliza_tuberculoPreguntado) siguienteHortalizaPreguntadaEnIf++;
+                reordenandoHortalizasTuberculos[i] = hortalizas_tuberculos[siguienteHortalizaPreguntadaEnIf];
+                siguienteHortalizaPreguntadaEnIf++;
             }
             // Pasamos el array de seguridad al array original, actualizando así el array:
             for (int i = 0; i < 14; i++) {
-                hortalizas_tuberculos[i] = reordenandoHortalizas_Tuberculos[i];
+                hortalizas_tuberculos[i] = reordenandoHortalizasTuberculos[i];
             }
 
         }
@@ -206,18 +247,11 @@ public class Almuerzo extends AppCompatActivity {
         else if (ordenBloqueAlimento == 4) {
             String reordenandoCondimento_Hidratos[] = new String[7];
             reordenandoCondimento_Hidratos[6] = condimento_hidratos[condimento_hidratosPreguntado];
-            if (condimento_hidratosPreguntado == 0) {
-                for (int i = 0; i == 6; i++) {
-                    reordenandoCondimento_Hidratos[i] = condimento_hidratos[i + 1];
-                }
-            } else {
-                for (int i = 0; i < condimento_hidratosPreguntado; i++) {
-                    reordenandoCondimento_Hidratos[i] = condimento_hidratos[i - 1];
-                }
-                //aqui la 'i' llega hasta un indice menos del total, donde está la elegida en reordenando:
-                for (int i = condimento_hidratosPreguntado; i == 6; i++) {
-                    reordenandoCondimento_Hidratos[i] = condimento_hidratos[i + 1];
-                }
+            int siguienteCondimentoPreguntadoEnIf = 0;
+            for (int i = 0; i < 6; i++) {
+                if (i == condimento_hidratosPreguntado) siguienteCondimentoPreguntadoEnIf++;
+                reordenandoCondimento_Hidratos[i] = condimento_hidratos[siguienteCondimentoPreguntadoEnIf];
+                siguienteCondimentoPreguntadoEnIf++;
             }
             // Pasamos el array de seguridad al array original, actualizando así el array:
             for (int i = 0; i < 7; i++) {
@@ -244,14 +278,14 @@ public class Almuerzo extends AppCompatActivity {
 
     private void guardarArrayHortalizaTuberculo() {
         for (int i = 0; i < 14; i++) {
-            sharedPrefEditorHortalizasTuberculos.putString(String.valueOf(i),hortalizas_tuberculos[i]);
+            sharedPrefEditorHortalizasTuberculos.putString(String.valueOf(i), hortalizas_tuberculos[i]);
             sharedPrefEditorHortalizasTuberculos.commit();
         }
     }
 
     private void guardarArrayCondimentoHidratos() {
-        for (int i=0;i<7;i++){
-            sharedPrefEditorCondimentoHidratos.putString(String.valueOf(i),condimento_hidratos[i]);
+        for (int i = 0; i < 7; i++) {
+            sharedPrefEditorCondimentoHidratos.putString(String.valueOf(i), condimento_hidratos[i]);
             sharedPrefEditorCondimentoHidratos.commit();
         }
     }
