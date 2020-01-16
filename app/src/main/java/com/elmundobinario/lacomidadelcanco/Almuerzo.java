@@ -136,8 +136,8 @@ public class Almuerzo extends AppCompatActivity {
     public void clickNo_Almuerzo(View view) {
         if (ordenBloqueAlimento == 1) { // si es un cereal:
             cerealPreguntado++;        // pasa a preguntar el siguiente cereal
-            if (cerealPreguntado >= 8) {
-                ordenBloqueAlimento++; // ya no hay más cereales: pasa a legumbres...
+            if (cerealPreguntado >= 8) { // ya no hay más cereales: pasa a legumbres...
+                ordenBloqueAlimento++;
                 preguntaIngrediente.setText(legumbres[legumbrePreguntada] + "?");
                 cerealPreguntado = 0;
                 cerealElegido = "";
@@ -145,7 +145,7 @@ public class Almuerzo extends AppCompatActivity {
                 preguntaIngrediente.setText(cereales[cerealPreguntado] + "?");
             }
         }
-        if (ordenBloqueAlimento == 2) { // si es una legumbre:
+        else if (ordenBloqueAlimento == 2) { // si es una legumbre:
             legumbrePreguntada++;        // pasa a preguntar la siguiente legumbre:
             if (legumbrePreguntada >= 9) {
                 ordenBloqueAlimento++; // ya no hay más cereales: pasa a legumbres...
@@ -157,7 +157,7 @@ public class Almuerzo extends AppCompatActivity {
             }
 
         }
-        if (ordenBloqueAlimento == 3) { // si es una hortaliza:
+        else if (ordenBloqueAlimento == 3) { // si es una hortaliza:
             hortaliza_tuberculoPreguntado++; // pasa a preguntar la siguiente hortaliza:
             if (hortaliza_tuberculoPreguntado >= 14) {
                 ordenBloqueAlimento++; // ya no hay más cereales: pasa a legumbres...
@@ -169,7 +169,7 @@ public class Almuerzo extends AppCompatActivity {
             }
 
         }
-        if (ordenBloqueAlimento == 4) { // si es un condimento:
+        else if (ordenBloqueAlimento == 4) { // si es un condimento:
             condimento_hidratosPreguntado++; // pasa a preguntar el siguiente condimento:
             if (condimento_hidratosPreguntado >= 7) {
                 // Aqui ya se tienen todos los alimentos
