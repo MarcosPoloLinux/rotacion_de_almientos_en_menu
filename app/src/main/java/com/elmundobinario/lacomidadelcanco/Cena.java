@@ -37,6 +37,7 @@ public class Cena extends AppCompatActivity {
     String pescadoElegido;
     String condimentoCenaElegido;
     int ordenBloqueAlimento = 1;
+    String confirmaEleccionTipoProteina;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,7 @@ public class Cena extends AppCompatActivity {
                 ordenDeCondimentosCena[i] = condimentosCena.getString(String.valueOf(i), "");
             }
         }
+
         // primera vez que muestra ingrediente preguntado. Las demás veces en onClicks...
         if (ordenBloqueAlimento == 1) {
             preguntaIngrediente.setText(ordenDeVerduras[verduraPreguntada] + "?");
@@ -98,8 +100,131 @@ public class Cena extends AppCompatActivity {
     }
 
     public void clickSi_Cena(View view) {
+        // 1 = verduras:
+        if (ordenBloqueAlimento == 1) {
+            verduraElegida = ordenDeVerduras[verduraPreguntada];
+            rotarArrayAlimento();
+            ordenBloqueAlimento++;
+            preguntaEleccionTipoDeProteina();
+            verduraPreguntada = 0;
+        }
+        // 2 = tipo de proteina:
+        else if (ordenBloqueAlimento == 2) {
+            if (confirmaEleccionTipoProteina == "huevo") {
+                tipoDeProteinaElegida = "huevo";
+                rotarArrayAlimento();
+                ordenBloqueAlimento++;
+                preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
+                tipoDeProteinaPreguntada = 0;
+            } else if (confirmaEleccionTipoProteina == "pescado") {
+                pescadoElegido = ordenDePescados[pescadoPreguntado];
+                tipoDeProteinaElegida = "pescado";
+                rotarArrayAlimento(); // la siguiente vez tocaria champiñones...etc
+                ordenBloqueAlimento++;
+            } else if (confirmaEleccionTipoProteina == "champiñones") {
+                tipoDeProteinaElegida = "champiñones";
+                rotarArrayAlimento();
+                ordenBloqueAlimento++;
+            } else if (confirmaEleccionTipoProteina == "pollo") {
+                tipoDeProteinaElegida = "pollo";
+                rotarArrayAlimento();
+                ordenBloqueAlimento++;
+            }
+
+        }
+        // 3 = condimento cena:
+        else if (ordenBloqueAlimento == 3) {
+            condimentoCenaElegido = ordenDeCondimentosCena[condimentoCenaPreguntado];
+            rotarArrayAlimento();
+            // Aqui ya se tienen todos los alimentos
+            // AQUI VA EL DÓDIGO PARA GUARDAR DATOS DE ARRAYS EN ARCHIVOS
+            guardarOrdenDeVerduras();
+            guardarOrdenDeTipoDeProteinas();
+            guardarOrdenDePescados();
+            guardarOrdenDeCondimentosCena();
+        }
     }
+
 
     public void clickNo_Cena(View view) {
     }
+
+    private void preguntaEleccionTipoDeProteina() {
+        // aqui habrá que elegir el tipo que toca y preguntarlo en el TextView...
+        if (ordenDeTipoDeProteinas[0] == "huevo") {
+            preguntaIngrediente.setText("huevo?");
+            confirmaEleccionTipoProteina = "huevo";
+        } else if (ordenDeTipoDeProteinas[0] == "pescado") {
+            preguntaIngrediente.setText(ordenDePescados[0] + "?");
+            confirmaEleccionTipoProteina = "pescado"; // aqui en clickSi hay que llamar a un metodo
+            //para elegir el pescado...
+        } else if (ordenDeTipoDeProteinas[0] == "champiñones") {
+            preguntaIngrediente.setText("champiñones?");
+            confirmaEleccionTipoProteina = "champiñones";
+        } else if (ordenDeTipoDeProteinas[0] == "pollo") {
+            preguntaIngrediente.setText("pollo?");
+            confirmaEleccionTipoProteina = "pollo";
+        }
+    }
+
+    private void rotarArrayAlimento() {
+        // ROTAR VERDURAS:
+        if (ordenBloqueAlimento == 1) {
+            String reordenandoVerduras[] = new String[13];
+            reordenandoVerduras[12] = ordenDeVerduras[verduraPreguntada];
+            int siguienteVerduraPreguntadaEnIf = 0;
+            for (int i = 0; i < 12; i++) {
+                if (i == verduraPreguntada)
+                    siguienteVerduraPreguntadaEnIf++;// salta el indice vacio
+                // del indice que se mueve al final (ultimo indice del array)
+                reordenandoVerduras[i] = ordenDeVerduras[siguienteVerduraPreguntadaEnIf];
+                siguienteVerduraPreguntadaEnIf++;
+            }
+            // Pasamos el array de seguridad al array original, actualizando así el array:
+            for (int i = 0; i < 13; i++) {
+                ordenDeVerduras[i]=reordenandoVerduras[i];
+            }
+        }
+        // ROTAR TIPO DE PROTEINAS y pescados...
+        else if (ordenBloqueAlimento==2){
+            String reordenandoTipoDeProteinas[]=new String[4];
+            reordenandoTipoDeProteinas[3]=ordenDeTipoDeProteinas[tipoDeProteinaPreguntada];
+            int siguienteTipoDeProteinaPreguntadaEnIf=0;
+            for(int i=0;i<3;i++){
+                if(i==tipoDeProteinaPreguntada)siguienteTipoDeProteinaPreguntadaEnIf++;
+                reordenandoTipoDeProteinas[i]=ordenDeTipoDeProteinas[siguienteTipoDeProteinaPreguntadaEnIf];
+                siguienteTipoDeProteinaPreguntadaEnIf++;
+            }
+            // Pasamos el array de seguridad al array original, actualizando así el array:
+            for(int i=0;i<4;i++){
+                ordenDeTipoDeProteinas[i]=reordenandoTipoDeProteinas[i];
+            }
+            //aqui dentro tambien se ordenara el array de PESCADOS si es el caso de ser elegido...
+            if(confirmaEleccionTipoProteina=="pescado"){
+                String reordenandoPescados[]=new String[9];
+                reordenandoPescados[8]=ordenDePescados[pescadoPreguntado];
+                int siguientePescadoPreguntadoEnIf=0;
+                for(int i=0;i<8;i++){
+                    if(i==pescadoPreguntado)siguientePescadoPreguntadoEnIf++;
+                    reordenandoPescados[i]=ordenDePescados[siguientePescadoPreguntadoEnIf];
+                    siguientePescadoPreguntadoEnIf++;
+                }
+            }
+        }
+        // ROTAR CONDIMENTO CENA:
+
+    }
+
+    private void guardarOrdenDeVerduras() {
+    }
+
+    private void guardarOrdenDeTipoDeProteinas() {
+    }
+
+    private void guardarOrdenDePescados() {
+    }
+
+    private void guardarOrdenDeCondimentosCena() {
+    }
+
 }

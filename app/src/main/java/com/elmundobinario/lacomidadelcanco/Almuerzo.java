@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class Almuerzo extends AppCompatActivity {
@@ -98,7 +97,7 @@ public class Almuerzo extends AppCompatActivity {
         // 1 = cereales
         if (ordenBloqueAlimento == 1) {
             cerealElegido = cereales[cerealPreguntado];
-            RotarArrayAlimento();
+            rotarArrayAlimento();
             ordenBloqueAlimento++;
             preguntaIngrediente.setText(legumbres[legumbrePreguntada] + "?");
             cerealPreguntado = 0;
@@ -106,7 +105,7 @@ public class Almuerzo extends AppCompatActivity {
         // 2 = legumbres:
         else if (ordenBloqueAlimento == 2) {
             legumbreElegida = legumbres[legumbrePreguntada];
-            RotarArrayAlimento();
+            rotarArrayAlimento();
             ordenBloqueAlimento++;
             preguntaIngrediente.setText(hortalizas_tuberculos[hortaliza_tuberculoPreguntado] + "?");
             legumbrePreguntada = 0;
@@ -114,14 +113,14 @@ public class Almuerzo extends AppCompatActivity {
         // 3 = hortalizas_tuberculos:
         else if (ordenBloqueAlimento == 3) {
             hortalizaTuberculoElegido = hortalizas_tuberculos[hortaliza_tuberculoPreguntado];
-            RotarArrayAlimento();
+            rotarArrayAlimento();
             ordenBloqueAlimento++;
             preguntaIngrediente.setText(condimento_hidratos[condimento_hidratosPreguntado] + "?");
         }
         // 4 = condimento_hidratos:
         else if (ordenBloqueAlimento == 4) {
             condimento_hidratosElegido = condimento_hidratos[condimento_hidratosPreguntado];
-            RotarArrayAlimento();
+            rotarArrayAlimento();
             // Aqui ya se tienen todos los alimentos
             // AQUI VA EL DÓDIGO PARA GUARDAR DATOS DE ARRAYS EN ARCHIVOS
             guardarArrayCereales();
@@ -189,7 +188,7 @@ public class Almuerzo extends AppCompatActivity {
         }
     }
 
-    private void RotarArrayAlimento() {
+    private void rotarArrayAlimento() {
         // ROTAR CEREALES:
         if (ordenBloqueAlimento == 1) {
             String reordenandoCereales[] = new String[8];
