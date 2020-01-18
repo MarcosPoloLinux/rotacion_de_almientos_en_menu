@@ -40,9 +40,7 @@ public class Cena extends AppCompatActivity {
 
     String verduraElegida;
     String proteinaElegida;
-    String pescadoElegido = "";
     String condimentoCenaElegido;
-    String alimentoEspecificoElegidoDeProteinas; // necesario para unir en 1 sola variable la proteina
     // para mandarla en putExtra con el intent.
     int ordenBloqueAlimento = 1;
 
@@ -104,7 +102,7 @@ public class Cena extends AppCompatActivity {
             verduraElegida = ordenDeVerduras[verduraPreguntada];
             rotarArrayAlimento();
             ordenBloqueAlimento++;
-            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada] == "pescado") {
+            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
                 preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado]);
             } else {
                 preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada]);
@@ -113,14 +111,14 @@ public class Cena extends AppCompatActivity {
         }
         // 2 = tipo de PROTEINA:
         else if (ordenBloqueAlimento == 2) {
-            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada] == "pescado") {
+            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
                 proteinaElegida = ordenDePescados[pescadoPreguntado]; // este será el String que se
                 //muestre en MenuFinal
             } else {
                 proteinaElegida = ordenDeTipoDeProteinas[tipoProteinaPreguntada];
             }
             rotarArrayAlimento();
-            ordenBloqueAlimento++:
+            ordenBloqueAlimento++;
             preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado]);
             tipoProteinaPreguntada = 0;
         }
@@ -145,14 +143,14 @@ public class Cena extends AppCompatActivity {
             verduraPreguntada++;
             if (verduraPreguntada >= 13) { // ya no hay más verduras, pasa a proteinas...
                 ordenBloqueAlimento++;
-                if (ordenDeTipoDeProteinas[tipoProteinaPreguntada] == "pescado") {
+                if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
                     if (pescadoPreguntado >= 9) { // ya no hay más pescados en la lista...
                         tipoProteinaPreguntada++; // se pteguntará el siguiente tipo de pescado...
                     } else {
                         preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado] + "?");
                     }
                 } else { // solo pregunta el siguiente tipoProteina, y pasa al bloque 2 de proteinas...
-                    preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada]+"?");
+                    preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada] + "?");
                 }
                 verduraPreguntada = 0;
             } else { // Si aun quedan verduras la preguntara:
@@ -161,20 +159,20 @@ public class Cena extends AppCompatActivity {
         }
         // si es un tipo de PROTEINA:
         else if (ordenBloqueAlimento == 2) {
-            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada] == "pescado") {
+            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
                 if (pescadoPreguntado >= 9) { // ya no hay más pescados en la lista...
                     tipoProteinaPreguntada++; // se pteguntará el siguiente tipo de pescado...
                 } else {
                     preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado] + "?");
                 }
             } else {
-                if (tipoProteinaPreguntada>=4){ // Si ya no hay maś tipos de proteinas por preguntar:
+                if (tipoProteinaPreguntada >= 4) { // Si ya no hay maś tipos de proteinas por preguntar:
                     ordenBloqueAlimento++;
-                    preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado]+"?");
+                    preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
                 } // aun quedan tipos de proteinas por preguntar:
-                preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada]+"?");
+                preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada] + "?");
             }
-         }
+        }
         // si es un CONDIMENTO:
         else if (ordenBloqueAlimento == 3) {
             condimentoCenaPreguntado++;
@@ -215,19 +213,19 @@ public class Cena extends AppCompatActivity {
         // ROTAR TIPO DE PROTEINAS y pescados...
         else if (ordenBloqueAlimento == 2) {
             String reordenandoTipoDeProteinas[] = new String[4];
-            reordenandoTipoDeProteinas[3] = ordenDeTipoDeProteinas[tipoDeProteinaPreguntada];
-            int siguienteTipoDeProteinaPreguntadaEnIf = 0;
+            reordenandoTipoDeProteinas[3] = ordenDeTipoDeProteinas[tipoProteinaPreguntada];
+            int siguienteTipoProteinaPreguntadaEnIf = 0;
             for (int i = 0; i < 3; i++) {
-                if (i == tipoDeProteinaPreguntada) siguienteTipoDeProteinaPreguntadaEnIf++;
-                reordenandoTipoDeProteinas[i] = ordenDeTipoDeProteinas[siguienteTipoDeProteinaPreguntadaEnIf];
-                siguienteTipoDeProteinaPreguntadaEnIf++;
+                if (i == tipoProteinaPreguntada) siguienteTipoProteinaPreguntadaEnIf++;
+                reordenandoTipoDeProteinas[i] = ordenDeTipoDeProteinas[siguienteTipoProteinaPreguntadaEnIf];
+                siguienteTipoProteinaPreguntadaEnIf++;
             }
             // Pasamos el array de seguridad al array original, actualizando así el array:
             for (int i = 0; i < 4; i++) {
                 ordenDeTipoDeProteinas[i] = reordenandoTipoDeProteinas[i];
             }
             //aqui dentro tambien se ordenara el array de PESCADOS si es el caso de ser elegido...
-            if (confirmaEleccionTipoProteina == "pescado") {
+            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
                 String reordenandoPescados[] = new String[9];
                 reordenandoPescados[8] = ordenDePescados[pescadoPreguntado];
                 int siguientePescadoPreguntadoEnIf = 0;
@@ -236,17 +234,27 @@ public class Cena extends AppCompatActivity {
                     reordenandoPescados[i] = ordenDePescados[siguientePescadoPreguntadoEnIf];
                     siguientePescadoPreguntadoEnIf++;
                 }
+                // Pasamos el array de seguridad al array original, actualizando así el array:
+                for (int i = 0; i < 9; i++) {
+                    ordenDePescados[i] = reordenandoPescados[i];
+                }
             }
         }
         // ROTAR CONDIMENTO CENA:
-        else if (ordenBloqueAlimento == 3) {
+        else {
             String reordenandoCondimentosCena[] = new String[8];
+            // se pone en ultimo lugar el condimento elegido:
             reordenandoCondimentosCena[7] = ordenDeCondimentosCena[condimentoCenaPreguntado];
-            int siguienteCondimentoCenaPreguntadoEnIf = 0;
+            int siguienteCondimentoCenaPreguntadoEnIf = 0; // (variable para saltar el indice vacio por el
+            // indice elegido y puesto el ultimo)
             for (int i = 0; i < 7; i++) {
                 if (i == condimentoCenaPreguntado) siguienteCondimentoCenaPreguntadoEnIf++;
                 reordenandoCondimentosCena[i] = ordenDeCondimentosCena[siguienteCondimentoCenaPreguntadoEnIf];
                 siguienteCondimentoCenaPreguntadoEnIf++;
+            }
+            // Pasamos el array de seguridad al array original, actualizando así el array:
+            for (int i = 0; i < 8; i++) {
+                ordenDeCondimentosCena[i] = reordenandoCondimentosCena[i];
             }
         }
 
@@ -254,52 +262,36 @@ public class Cena extends AppCompatActivity {
 
     private void guardarOrdenVerduras() {
         for (int i = 0; i < 13; i++) {
-            sharedPrefEditorVerdurasCenaYTipoProteina.putString(String.valueOf(i), ordenDeVerduras[i]);
-            sharedPrefEditorVerdurasCenaYTipoProteina.commit();
+            verdurasCenaShPrEditor.putString(String.valueOf(i), ordenDeVerduras[i]);
+            verdurasCenaShPrEditor.commit();
         }
     }
 
-    private void guardarOrdenTipoProteinas() { // OJO aqui la key es el nombre y el valor es el indice de array
+    private void guardarOrdenTipoProteinas() {
         for (int i = 0; i < 4; i++) {
-            if (ordenDeTipoDeProteinas[i] == "huevo") {
-                sharedPrefEditorVerdurasCenaYTipoProteina.putString("huevo", String.valueOf(i));
-                sharedPrefEditorVerdurasCenaYTipoProteina.commit();
-            } else if (ordenDeTipoDeProteinas[i] == "pescado") {
-                sharedPrefEditorVerdurasCenaYTipoProteina.putString("pescado", String.valueOf(i));
-                sharedPrefEditorVerdurasCenaYTipoProteina.commit();
-            } else if (ordenDeTipoDeProteinas[i] == "champiñones") {
-                sharedPrefEditorVerdurasCenaYTipoProteina.putString("champiñones", String.valueOf(i));
-                sharedPrefEditorVerdurasCenaYTipoProteina.commit();
-            } else { // ya solo queda el pollo, es 1 de 4... por eso no es else if.
-                sharedPrefEditorVerdurasCenaYTipoProteina.putString("pollo", String.valueOf(i));
-                sharedPrefEditorVerdurasCenaYTipoProteina.commit();
-            }
+            tipoProteinaShPrEditor.putString(String.valueOf(i), ordenDeTipoDeProteinas[i]);
+            tipoProteinaShPrEditor.commit();
         }
     }
 
     private void guardarOrdenPescados() {
         for (int i = 0; i < 9; i++) {
-            sharedPrefEditorPescados.putString(String.valueOf(i), ordenDePescados[i]);
-            sharedPrefEditorPescados.commit();
+            pescadosShPrEditor.putString(String.valueOf(i), ordenDePescados[i]);
+            pescadosShPrEditor.commit();
         }
     }
 
     private void guardarOrdenCondimentosCena() {
         for (int i = 0; i < 8; i++) {
-            sharedPrefEditorCondimentosCena.putString(String.valueOf(i), ordenDeCondimentosCena[i]);
-            sharedPrefEditorCondimentosCena.commit();
+            condimentoCenaShPrEditor.putString(String.valueOf(i), ordenDeCondimentosCena[i]);
+            condimentoCenaShPrEditor.commit();
         }
     }
 
     private void lanzaActivityMenuFinal() {
-        if (pescadoElegido != "") { // necesario para saber si fue pescado o cualquier otro alimento...
-            alimentoEspecificoElegidoDeProteinas = pescadoElegido;
-        } else {
-            alimentoEspecificoElegidoDeProteinas = tipoDeProteinaElegida;
-        }
         Intent intencion = new Intent(this, MenuFinal.class);
         intencion.putExtra("verduraElegidaExtra", verduraElegida);
-        intencion.putExtra("alimentoProteinas", alimentoEspecificoElegidoDeProteinas);
+        intencion.putExtra("alimentoProteinas", proteinaElegida);
         intencion.putExtra("condimentoCena", condimentoCenaElegido);
         startActivity(intencion);
     }
