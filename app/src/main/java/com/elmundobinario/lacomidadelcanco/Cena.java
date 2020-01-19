@@ -97,99 +97,119 @@ public class Cena extends AppCompatActivity {
     }
 
     public void clickSi_Cena(View view) {
-        // 1 = VERDURAS:
-        if (ordenBloqueAlimento == 1) {
-            verduraElegida = ordenDeVerduras[verduraPreguntada];
-            rotarArrayAlimento();
-            ordenBloqueAlimento++;
-            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
-                preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado]);
-            } else {
-                preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada]);
-            }
-            verduraPreguntada = 0;
-        }
-        // 2 = tipo de PROTEINA:
-        else if (ordenBloqueAlimento == 2) {
-            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
-                proteinaElegida = ordenDePescados[pescadoPreguntado]; // este será el String que se
-                //muestre en MenuFinal
-            } else {
-                proteinaElegida = ordenDeTipoDeProteinas[tipoProteinaPreguntada];
-            }
-            rotarArrayAlimento();
-            ordenBloqueAlimento++;
-            preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado]);
-            tipoProteinaPreguntada = 0;
-        }
-        // 3 = condimento cena:
-        else if (ordenBloqueAlimento == 3) {
-            condimentoCenaElegido = ordenDeCondimentosCena[condimentoCenaPreguntado];
-            rotarArrayAlimento();
-            // Aqui ya se tienen todos los alimentos
-            // AQUI VA EL DÓDIGO PARA GUARDAR DATOS DE ARRAYS EN ARCHIVOS
-            guardarOrdenVerduras();
-            guardarOrdenTipoProteinas();
-            guardarOrdenPescados();
-            guardarOrdenCondimentosCena();
-            condimentoCenaPreguntado = 0;
-            lanzaActivityMenuFinal();
-        }
-    }
-
-    public void clickNo_Cena(View view) {
-        // si es una VERDURA:
-        if (ordenBloqueAlimento == 1) {
-            verduraPreguntada++;
-            if (verduraPreguntada >= 13) { // ya no hay más verduras, pasa a proteinas...
+        switch (ordenBloqueAlimento) {
+            case 1:
+                // 1 = VERDURAS:
+                verduraElegida = ordenDeVerduras[verduraPreguntada];
+                rotarArrayAlimento();
                 ordenBloqueAlimento++;
                 if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
-                    if (pescadoPreguntado >= 9) { // ya no hay más pescados en la lista...
-                        tipoProteinaPreguntada++; // se pteguntará el siguiente tipo de pescado...
-                    } else {
-                        preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado] + "?");
-                    }
-                } else { // solo pregunta el siguiente tipoProteina, y pasa al bloque 2 de proteinas...
+                    preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado] + "?");
+                } else {
                     preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada] + "?");
                 }
                 verduraPreguntada = 0;
-            } else { // Si aun quedan verduras la preguntara:
-                preguntaIngrediente.setText(ordenDeVerduras[verduraPreguntada] + "?");
-            }
-        }
-        // si es un tipo de PROTEINA:
-        else if (ordenBloqueAlimento == 2) {
-            if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
-                if (pescadoPreguntado >= 9) { // ya no hay más pescados en la lista...
-                    tipoProteinaPreguntada++; // se pteguntará el siguiente tipo de pescado...
+                break;
+            case 2:
+                // 2 = tipo de PROTEINA:
+                if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
+                    proteinaElegida = ordenDePescados[pescadoPreguntado]; // este será el String que se
+                    //muestre en MenuFinal
                 } else {
-                    preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado] + "?");
+                    proteinaElegida = ordenDeTipoDeProteinas[tipoProteinaPreguntada];
                 }
-            } else {
-                if (tipoProteinaPreguntada >= 4) { // Si ya no hay maś tipos de proteinas por preguntar:
-                    ordenBloqueAlimento++;
-                    preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
-                } // aun quedan tipos de proteinas por preguntar:
-                preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada] + "?");
-            }
-        }
-        // si es un CONDIMENTO:
-        else if (ordenBloqueAlimento == 3) {
-            condimentoCenaPreguntado++;
-            if (condimentoCenaPreguntado >= 8) { // ya no hay más condimentos
-                // Aqui ya no hay más alimentos por preguntar...
-                // aqui se guardarán los datos de los arrays a los SharedPreferences:
+                rotarArrayAlimento();
+                ordenBloqueAlimento++;
+                preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
+                tipoProteinaPreguntada = 0;
+                break;
+            case 3:
+                // 3 = condimento cena:
+                condimentoCenaElegido = ordenDeCondimentosCena[condimentoCenaPreguntado];
+                rotarArrayAlimento();
+                // Aqui ya se tienen todos los alimentos
+                // AQUI VA EL DÓDIGO PARA GUARDAR DATOS DE ARRAYS EN ARCHIVOS
                 guardarOrdenVerduras();
                 guardarOrdenTipoProteinas();
                 guardarOrdenPescados();
                 guardarOrdenCondimentosCena();
                 condimentoCenaPreguntado = 0;
-                condimentoCenaElegido = "";
                 lanzaActivityMenuFinal();
-            } else {
-                preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
-            }
+                break;
         }
+
+    }
+
+    public void clickNo_Cena(View view) {
+        switch (ordenBloqueAlimento) {
+            // si es una VERDURA:
+            case 1:
+                verduraPreguntada++;
+                if (verduraPreguntada >= 13) { // ya no hay más verduras, pasa a proteinas...
+                    ordenBloqueAlimento++;
+                    if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
+                        if (pescadoPreguntado >= 9) { // ya no hay más pescados en la lista...
+                            tipoProteinaPreguntada++; // se pteguntará el siguiente tipo de pescado...
+                        } else {
+                            preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado] + "?");
+                        }
+                    } else { // solo pregunta el siguiente tipoProteina, y pasa al bloque 2 de proteinas...
+                        preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada] + "?");
+                    }
+                    verduraPreguntada = 0;
+                } else { // Si aun quedan verduras la preguntara:
+                    preguntaIngrediente.setText(ordenDeVerduras[verduraPreguntada] + "?");
+                }
+                break;
+            // si es un tipo de PROTEINA:
+            case 2:
+                if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
+                    pescadoPreguntado++;
+                    if (pescadoPreguntado >= 9) { // ya no hay más pescados en la lista...
+                        tipoProteinaPreguntada++;
+                        if (tipoProteinaPreguntada >= 4) {
+                            ordenBloqueAlimento++;
+                            preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
+                        } else {
+                            preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada] + "?");
+                        }
+                    } else {
+                        preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado] + "?");
+                    }
+                } else {
+                    tipoProteinaPreguntada++;
+                    if (tipoProteinaPreguntada >= 4) { // Si ya no hay maś tipos de proteinas por preguntar:
+                        ordenBloqueAlimento++;
+                        preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
+                    } // aun quedan tipos de proteinas por preguntar:
+                    else {
+                        if (ordenDeTipoDeProteinas[tipoProteinaPreguntada].equals("pescado")) {
+                            preguntaIngrediente.setText(ordenDePescados[pescadoPreguntado] + "?");
+                        } else {
+                            preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada] + "?");
+                        }
+                    }
+                }
+                break;
+            // si es un CONDIMENTO:
+            case 3:
+                condimentoCenaPreguntado++;
+                if (condimentoCenaPreguntado >= 8) { // ya no hay más condimentos
+                    // Aqui ya no hay más alimentos por preguntar...
+                    // aqui se guardarán los datos de los arrays a los SharedPreferences:
+                    guardarOrdenVerduras();
+                    guardarOrdenTipoProteinas();
+                    guardarOrdenPescados();
+                    guardarOrdenCondimentosCena();
+                    condimentoCenaPreguntado = 0;
+                    condimentoCenaElegido = "";
+                    lanzaActivityMenuFinal();
+                } else {
+                    preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
+                }
+                break;
+        }
+
     }
 
     private void rotarArrayAlimento() {
@@ -294,6 +314,15 @@ public class Cena extends AppCompatActivity {
         intencion.putExtra("alimentoProteinas", proteinaElegida);
         intencion.putExtra("condimentoCena", condimentoCenaElegido);
         startActivity(intencion);
+    }
+
+    private void noHayTipoProteina() {
+        tipoProteinaPreguntada++;
+        if (tipoProteinaPreguntada >= 4) {
+            ordenBloqueAlimento++;
+            preguntaIngrediente.setText(ordenDeCondimentosCena[condimentoCenaPreguntado] + "?");
+        } else
+            preguntaIngrediente.setText(ordenDeTipoDeProteinas[tipoProteinaPreguntada] + "?");
     }
 
 }
